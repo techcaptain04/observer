@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import { Galleria } from "primereact/galleria";
-import axios from "axios";
-import moment from "moment";
+import { useState, useEffect, useRef } from 'react';
+import { Galleria } from 'primereact/galleria';
+import axios from 'axios';
+import moment from 'moment';
 // import { PhotoService } from './service/photo-service';
-import { useParams } from "react-router-dom";
-import Datepicker from "../../components/date-picker";
-import { BlockUI } from "primereact/blockui";
-import { ProgressSpinner } from "primereact/progressspinner";
+import { useParams } from 'react-router-dom';
+import Datepicker from '../../components/date-picker';
+import { BlockUI } from 'primereact/blockui';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface Image {
   id: number;
@@ -17,7 +17,7 @@ interface Image {
 }
 
 const Gallery = () => {
-  const { userId } = useParams();
+  const { username } = useParams();
   const [images, setImages] = useState<Image[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const galleria = useRef<Galleria>(null);
@@ -26,20 +26,20 @@ const Gallery = () => {
   const getToday = () => {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
 
   const getImages = async (date: any) => {
     const params = {
-      userId,
-      startedAt: date,
+      username,
+      startedAt: date
     };
     try {
       const res = await axios.get(
-        process.env.REACT_APP_BACKEND_API + "/images/user",
-        { params },
+        process.env.REACT_APP_BACKEND_API + '/images/user',
+        { params }
       );
       if (res.status === 200) {
         console.log(res.data);
@@ -47,7 +47,7 @@ const Gallery = () => {
         setLoading(true);
       }
     } catch (error) {
-      console.error("Error fetching images:", error);
+      console.error('Error fetching images:', error);
     } finally {
       setLoading(false);
     }
@@ -64,26 +64,30 @@ const Gallery = () => {
     if (date) {
       console.log(date);
       const formattedDate = moment.isMoment(date) ? date : moment(date);
-      const sendDate = formattedDate.format("YYYY-MM-DD");
+      const sendDate = formattedDate.format('YYYY-MM-DD');
       getImages(sendDate);
     } else {
-      console.log("No date selected");
+      console.log('No date selected');
     }
   };
 
   const itemTemplate = (item: any) => {
     return (
       <img
-        src={item.imagePath}
+        src={process.env.REACT_APP_BACKEND_API + '/upload/' + item.imagePath}
         alt={item.alt}
-        style={{ width: "100%", display: "block" }}
+        style={{ width: '100%', display: 'block' }}
       />
     );
   };
 
   const thumbnailTemplate = (item: any) => {
     return (
-      <img src={item.imagePath} alt={item.alt} style={{ display: "block" }} />
+      <img
+        src={process.env.REACT_APP_BACKEND_API + '/upload/' + item.imagePath}
+        alt={item.alt}
+        style={{ display: 'block' }}
+      />
     );
   };
 
@@ -114,7 +118,7 @@ const Gallery = () => {
             ref={galleria}
             value={images}
             numVisible={7}
-            style={{ width: "1048px" }}
+            style={{ width: '1048px' }}
             activeIndex={activeIndex}
             onItemChange={(e) => setActiveIndex(e.index)}
             circular
@@ -129,9 +133,13 @@ const Gallery = () => {
               images.map((image, index) => {
                 let imgEl = (
                   <img
-                    src={image.imagePath}
-                    alt={"pic"}
-                    style={{ cursor: "pointer" }}
+                    src={
+                      process.env.REACT_APP_BACKEND_API +
+                      '/upload/' +
+                      image.imagePath
+                    }
+                    alt={'pic'}
+                    style={{ cursor: 'pointer' }}
                     onClick={() => {
                       setActiveIndex(index);
                       galleria.current && galleria.current.show();

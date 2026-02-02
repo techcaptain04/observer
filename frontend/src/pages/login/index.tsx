@@ -1,16 +1,16 @@
-import { useState } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import withAuth from "../../hoc/with-auth-redirect";
-import { useLocalStorage } from "../../hooks/useLocalstorage";
+import { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import withAuth from '../../hoc/with-auth-redirect';
+import { useLocalStorage } from '../../hooks/useLocalstorage';
 
 const Login = () => {
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   // const navigate = useNavigate();
 
   // const [token, setToken] = useState("");
-  const [accessToken, setAccessToken] = useLocalStorage("access_token", "");
+  const [accessToken, setAccessToken] = useLocalStorage('access_token', '');
 
   const handleLogin = async (e: React.FormEvent) => {
     // Redirect to protected route after login
@@ -18,26 +18,26 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        process.env.REACT_APP_BACKEND_API + "/auth/login",
+        process.env.REACT_APP_BACKEND_API + '/auth/login',
         {
           username,
-          password,
-        },
+          password
+        }
       );
-      if (res.data.message === "success") {
+      if (res.data.message === 'success') {
         // alert(res.data.message);
         console.log(res.data.access_token);
         // setToken(res.data.access_token);
         // Simulate login and set access token in local storage
         setAccessToken(res.data.access_token);
         // localStorage.setItem("access_token", token);
-        window.location.href = "/"; // Adjust based on your routing structure
+        window.location.href = '/'; // Adjust based on your routing structure
       } else {
-        alert(res.data.message);
+        // alert(res.data.message);
       }
     } catch (error) {
       console.log(error);
-      alert(error);
+      // alert(error);
     }
   };
 

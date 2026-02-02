@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 // import { DataTable } from 'primereact/datatable';
 // import { Column } from 'primereact/column';
 // import { ProductService } from './service/product-service';
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { Button } from "primereact/button";
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Button } from 'primereact/button';
 // import { DataView } from "primereact/dataview";
 // import { classNames } from "primereact/utils";
-import { Card } from "primereact/card";
-import { Avatar } from "primereact/avatar";
+import { Card } from 'primereact/card';
+import { Avatar } from 'primereact/avatar';
 
 interface User {
   id: string;
@@ -31,9 +31,9 @@ export const Admin = () => {
     const getUsers = async () => {
       try {
         const res = await axios.get(
-          process.env.REACT_APP_BACKEND_API + "/users",
+          process.env.REACT_APP_BACKEND_API + '/users'
         );
-        if (res.statusText === "OK") {
+        if (res.statusText === 'OK') {
           const users = res.data;
           console.log(users);
           setUsers(users);
@@ -49,8 +49,9 @@ export const Admin = () => {
   }, []);
 
   useEffect(() => {
-    console.log("selected user: ", selectedUser);
-    selectedUser && navigate(`/${selectedUser.id}/gallery`);
+    console.log('selected user: ', selectedUser);
+    // selectedUser && navigate(`/${selectedUser.username}/gallery`);
+    selectedUser && window.open(`/${selectedUser.username}/gallery`, '_blank');
   }, [selectedUser]);
 
   const handleListClick = () => {
@@ -91,7 +92,7 @@ export const Admin = () => {
             selection={selectedUser!}
             onSelectionChange={(e) => setSelectedUser(e.value)}
             dataKey="id"
-            tableStyle={{ minWidth: "50rem" }}
+            tableStyle={{ minWidth: '50rem' }}
           >
             <Column field="id" header="Id"></Column>
             <Column
@@ -103,6 +104,11 @@ export const Admin = () => {
               // align={"center"}
               field="ipAddress"
               header="IpAddress"
+            ></Column>
+            <Column
+              // align={"center"}
+              field="count"
+              header="Count"
             ></Column>
           </DataTable>
         ) : (
@@ -122,7 +128,7 @@ export const Admin = () => {
                   </div> */}
                   <div className="flex align-items-center justify-content-between">
                     <span className="m-0">{user.ipAddress}</span>
-                    <span className="m-0">{"images: " + user.count}</span>
+                    <span className="m-0">{'images: ' + user.count}</span>
                     <span className="pi pi-chevron-right"></span>
                   </div>
                 </Card>
