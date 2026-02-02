@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Galleria } from 'primereact/galleria';
 import axios from 'axios';
-import moment from 'moment';
+import moment from 'moment-timezone';
 // import { PhotoService } from './service/photo-service';
 import { useParams } from 'react-router-dom';
 import Datepicker from '../../components/date-picker';
@@ -90,6 +90,15 @@ const Gallery = () => {
       />
     );
   };
+  const convertToTokyoTime = (dateString: string): string => {
+    // Convert to Moment object and use tz()
+    const momentDate = moment(dateString);
+
+    // Convert to Tokyo time
+    const tokyoTime = momentDate.tz('Asia/Tokyo');
+
+    return tokyoTime.format('YYYY-MM-DD HH:mm:ss'); // You can adjust the format as needed
+  };
 
   // const isLoading = () => {
   //   return (
@@ -149,7 +158,7 @@ const Gallery = () => {
                 return (
                   <div className="col-2" key={index}>
                     {imgEl}
-                    <span>{image.createdAt}</span>
+                    <span>{convertToTokyoTime(image.createdAt)}</span>
                   </div>
                 );
               })}

@@ -6,6 +6,7 @@ import { Image } from './image.entity';
 import { UsersService } from '../users/users.service'; // Import UsersService
 import * as fs from 'fs';
 import * as path from 'path';
+import { toZonedTime } from 'date-fns-tz';
 
 @Injectable()
 export class ImagesService {
@@ -88,31 +89,31 @@ export class ImagesService {
     username: string,
     date: Date
   ): Promise<Image[]> {
-    const startDate = new Date(date);
-    startDate.setUTCHours(0, 0, 0, 0); // Set to 00:00:00
+    const start = new Date(date);
+    start.setUTCHours(0, 0, 0, 0); // Set to 00:00:00
 
-    const endDate = new Date(date);
-    endDate.setUTCHours(23, 59, 59, 999);
-    console.log(startDate, endDate);
+    const end = new Date(date);
+    end.setUTCHours(23, 59, 59, 999);
+    console.log(start, end);
     return this.imagesRepository.find({
       where: {
         username: username,
-        createdAt: Between(startDate, endDate)
+        createdAt: Between(start, end)
       }
     });
   }
 
   async countImagesToday(username: string): Promise<number> {
-    const startDate = new Date();
-    startDate.setUTCHours(0, 0, 0, 0); // Start of the day
+    const start = new Date();
+    start.setUTCHours(0, 0, 0, 0); // Start of the day
 
-    const endDate = new Date();
-    endDate.setUTCHours(23, 59, 59, 999);
-    console.log(startDate, endDate);
+    const end = new Date();
+    end.setUTCHours(23, 59, 59, 999);
+    console.log(start, end);
     return this.imagesRepository.count({
       where: {
         username: username,
-        createdAt: Between(startDate, endDate)
+        createdAt: Between(start, end)
       }
     });
     // return this.imagesRepository

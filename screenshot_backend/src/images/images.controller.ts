@@ -71,17 +71,17 @@ export class ImagesController {
 
     // Prepare to send back the image files
 
-    const imageFiles = images.map((image) => {
-      return {
-        id: image.id,
-        imagePath: image.imagePath, // Path to the image file
-        username: image.username,
-        ipAddress: image.ipAddress,
-        createdAt: this.imagesService.formatDateAndTimeToString(image.createdAt)
-      };
-    });
+    // const imageFiles = images.map((image) => {
+    //   return {
+    //     id: image.id,
+    //     imagePath: image.imagePath, // Path to the image file
+    //     username: image.username,
+    //     ipAddress: image.ipAddress,
+    //     createdAt: this.imagesService.formatDateAndTimeToString(image.createdAt)
+    //   };
+    // });
 
     // Send the image files as a response
-    res.json(imageFiles);
+    return res.json(images);
   }
 }
