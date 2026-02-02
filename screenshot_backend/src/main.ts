@@ -8,9 +8,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-      // allowedHeaders:"*",
-      origin: "http://localhost:5173",
-      credentials: true,
+    // allowedHeaders:"*",
+    origin: 'http://localhost:5175',
+    credentials: true
   });
   console.log(process.env.PORT);
   await app.listen(process.env.PORT ?? 5174);
